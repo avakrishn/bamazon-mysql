@@ -75,6 +75,19 @@ Clone this project repository to a local directory on your computer by running t
 
 In the project root directory (bamazon-mysql), the project directory structure is as follows:
 1. [bamazon.sql](#bamazon-sql)
+    * Creates the MySQL database called `bamazon_db` and creates a table inside this databasee called `products`.
+    * The  `products` table includes the following columns:
+        * item_id (unique id for each product)
+
+        * product_name (Name of product)
+
+        * department_name
+
+        * price (cost to customer)
+
+        * stock_quantity (how much of the product is available in stores)
+    * There are 10 products in the `products` table
+
 2. [bamazonCustomer](#bamazon-customer)
 3. [package.json](#package)
 4. [package-lock.json](#package-lock)
