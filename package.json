@@ -1,0 +1,23 @@
+{
+  "name": "bamazon-mysql",
+  "version": "1.0.0",
+  "description": "npm packages for bamazon-mysql app",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avakrishn/bamazon-mysql.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/avakrishn/bamazon-mysql/issues"
+  },
+  "homepage": "https://github.com/avakrishn/bamazon-mysql#readme",
+  "dependencies": {
+    "inquirer": "^6.1.0",
+    "mysql": "^2.16.0"
+  }
+}
