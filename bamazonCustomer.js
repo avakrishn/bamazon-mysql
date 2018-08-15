@@ -147,3 +147,57 @@ function checkUnits(productList, custProductUnits){
 
     }
 }
+
+//if the store does have enough of the product, then fulfill the customer's order by updating the SQL database to reflect the remaining quantity.
+function updateProducts(stockQuantity, price){
+    var query = connection.query(
+        "UPDATE products SET ? WHERE ?",
+        [{
+            stock_quantity: stockQuantity - custProductUnits
+        },
+        {
+            item_id: custProductID
+        }],function(error, updateResponse){
+            if (error) throw error;
+            var item = {
+                item_name: productName,
+                item_quantity: custProductUnits,
+                item_price: price
+            }
+            cartArray.push(item);
+            // console.log(cartArray);
+            inquirer.prompt([
+            {
+                type: "list",
+                name: "action",
+                message: `Please choose what you would like to do next:`,
+                choices: ["Select another item to buy", "Checkout", "Leave Bamazon"]
+            }
+            ]).then(function(actionResponse){
+                if(actionResponse.action == "Select another item to buy"){
+                    console.log('----------------------------------------------------------');
+                    readProducts();
+                }
+                // if customer is ready to checkout, show the customer the total cost of their purchase.
+                else if(actionResponse.action == "Checkout"){
+                    var totalCost = 0;
+                    console.log('----------------------------------------------------------');
+                    console.log('--------------------- Your Order: ------------------------');
+                    for (j in cartArray){
+                        console.log(`Item #${parseInt(j)+1}: ${cartArray[j].item_name}    Units: ${cartArray[j].item_quantity}  price: $${cartArray[j].item_price}`);
+                        console.log('----------------------------------------------------------');
+                        totalCost += cartArray[j].item_price;
+                    }
+                    console.log('----------------------------------------------------------');
+                    console.log(`The total cost of your purchase is: $${totalCost}`);
+                    console.log('----------------------------------------------------------');
+                    connection.end();
+                }
+                else{
+                    // end connection to MySQL database if customer chooses 'Leave Bamazon'
+                    connection.end();
+                }
+            });
+        }
+    );
+}
