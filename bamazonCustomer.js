@@ -50,3 +50,100 @@ function readProducts() {
         chooseProduct(productList);
     });
 }
+
+//Customer will then be prompted with 2 questions
+function chooseProduct(productList){
+    inquirer.prompt([
+        {
+            // The first prompt question asks the customer for the ID of the product that they would like to buy.
+            type: "input",
+            name: "id",
+            message: "What is the ID of the product that you would like to buy?"
+        },
+        {
+            // The second prompt question asks the customer how many units of the product they would like to buy.
+            type: "input",
+            name: "units",
+            message: "How many units of the product would you like to buy?"
+        }
+        ]).then(function(idResponse){
+            console.log('----------------------------------------------------------');
+            // custProductID stores the id the customer specified after the first prompt
+            custProductID = idResponse.id;
+            // custProductUnits stores the units the customer specified after the first prompt
+            custProductUnits = idResponse.units;
+
+            // for each index i in the productList array
+            for (i in productList){
+                //if the custProductID matches an item_id in the productList array
+                if (productList[i].item_id == custProductID){
+                    productName = productList[i].product_name;
+                    pIndex = i;
+                    return checkUnits(productList, custProductUnits);
+                }
+            }
+            //if the custProductID does not match an item_id in the productList array then the customer is asked if they want to select another item to buy or leave Bamazon
+            inquirer.prompt([
+            {
+                type: "list",
+                name: "action",
+                message: `The product with the id: ${custProductID} does not exist. Please choose one of the options below:`,
+                choices: ["Select another item to buy", "Leave Bamazon"]
+            }
+            ]).then(function(actionResponse){
+                if(actionResponse.action == "Select another item to buy"){
+                    console.log('----------------------------------------------------------');
+                    chooseProduct(productList);
+                }
+                else{
+                    // end connection to MySQL database if customer chooses 'Leave Bamazon'
+                    connection.end();
+                }
+            });
+    });
+}
+
+// Once the customer has placed the order, the checkUnits function checks if the store has enough of the product to meet the customer's request.
+function checkUnits(productList, custProductUnits){
+    // console.log(pIndex);  
+    //if the store does have enough of the product, then fulfill the customer's order by updating the SQL database to reflect the remaining quantity.
+    if(productList[pIndex].stock_quantity >= custProductUnits){
+        price = parseFloat(custProductUnits) * parseFloat(productList[pIndex].price);
+        updateProducts(productList[pIndex].stock_quantity, price);
+    }
+    // If the store does not have enough of the product to meet the customer's request, the app notifies the customer of insufficient quantity, and then asks the user if they would like to specify another unit amount for the item they chose to purchase, select a different item to purchase, or leave bamazon.
+    else{
+        console.log('----------------------------------------------------------');
+        console.log(`There is an insufficient quantity of ${productName} that you would like to buy.`)
+        inquirer.prompt([
+            {
+                type: "list",
+                name: "option",
+                message: `Please choose an option from below`,
+                choices: [`Specify a different amount of ${productName} to purchase that is less than or equal to ${productList[pIndex].stock_quantity} units`,"Select another item to buy", "Leave Bamazon"]
+            }
+
+            ]).then(function(optionResponse){
+                console.log('----------------------------------------------------------');
+                if(optionResponse.option == "Select another item to buy"){
+                    chooseProduct(productList);
+                }
+                else if(optionResponse.option == "Leave Bamazon"){
+                    connection.end();
+                }
+                else{
+                    inquirer.prompt([
+                        {
+                            type: "input",
+                            name: "units",
+                            message: `How many units of the product ${productName} would you like to buy?`
+                        }
+                    ]).then(function(unitResponse){
+                        custProductUnits = unitResponse.units
+                        checkUnits(productList, custProductUnits);
+                    });
+                }
+            });
+
+    }
+}
