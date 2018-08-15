@@ -104,12 +104,11 @@ function chooseProduct(productList){
 }
 
 // Once the customer has placed the order, the checkUnits function checks if the store has enough of the product to meet the customer's request.
-function checkUnits(productList, custProductUnits){
-    // console.log(pIndex);  
+function checkUnits(productList, custProductUnits){  
     //if the store does have enough of the product, then fulfill the customer's order by updating the SQL database to reflect the remaining quantity.
-    if(productList[pIndex].stock_quantity >= custProductUnits){
+    if(parseFloat(productList[pIndex].stock_quantity) >= parseFloat(custProductUnits)){
         price = parseFloat(custProductUnits) * parseFloat(productList[pIndex].price);
-        updateProducts(productList[pIndex].stock_quantity, price);
+        updateProducts(productList[pIndex].stock_quantity, price, custProductUnits);
     }
     // If the store does not have enough of the product to meet the customer's request, the app notifies the customer of insufficient quantity, and then asks the user if they would like to specify another unit amount for the item they chose to purchase, select a different item to purchase, or leave bamazon.
     else{
@@ -139,7 +138,7 @@ function checkUnits(productList, custProductUnits){
                             message: `How many units of the product ${productName} would you like to buy?`
                         }
                     ]).then(function(unitResponse){
-                        custProductUnits = unitResponse.units
+                        custProductUnits = unitResponse.units;
                         checkUnits(productList, custProductUnits);
                     });
                 }
@@ -149,7 +148,7 @@ function checkUnits(productList, custProductUnits){
 }
 
 //if the store does have enough of the product, then fulfill the customer's order by updating the SQL database to reflect the remaining quantity.
-function updateProducts(stockQuantity, price){
+function updateProducts(stockQuantity, price, custProductUnits){
     var query = connection.query(
         "UPDATE products SET ? WHERE ?",
         [{
@@ -165,7 +164,6 @@ function updateProducts(stockQuantity, price){
                 item_price: price
             }
             cartArray.push(item);
-            // console.log(cartArray);
             inquirer.prompt([
             {
                 type: "list",
