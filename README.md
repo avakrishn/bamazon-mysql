@@ -104,3 +104,17 @@ In the project root directory (bamazon-mysql), the project directory structure i
 6. <a id="gitignore"></a>**.gitignore** 
 
 ## <a id="command-line"></a> Running Bamazon from the command line
+
+**Customer Flow**
+
+![Customer Flow 1](https://raw.githubusercontent.com/avakrishn/bamazon-mysql/master/assets/images/customer-flow-1.png)
+
+![Customer Flow 2](https://raw.githubusercontent.com/avakrishn/bamazon-mysql/master/assets/images/customer-flow-2.png)
+
+![Customer Flow 3](https://raw.githubusercontent.com/avakrishn/bamazon-mysql/master/assets/images/customer-flow-3.png)
+
+![Customer Flow 4](https://raw.githubusercontent.com/avakrishn/bamazon-mysql/master/assets/images/customer-flow-4.png)
+
+![Customer Flow 5](https://raw.githubusercontent.com/avakrishn/bamazon-mysql/master/assets/images/customer-flow-5.png)
+
+![Customer Flow 6](https://raw.githubusercontent.com/avakrishn/bamazon-mysql/master/assets/images/customer-flow-6.png)
