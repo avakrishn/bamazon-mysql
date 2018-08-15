@@ -34,3 +34,19 @@ connection.connect(function(error) {
         readProducts();
     }
 });
+
+
+//--------------------------------------------------Functions
+
+//Running this application will first display all of the items available for sale. Including the ids, names, and prices of products for sale.
+function readProducts() {
+    console.log("Selecting all products...\n");
+    connection.query("SELECT * FROM products", function(error, productList){
+        if (error) throw error;
+        // Log the productList array which contains the data from products table that was queried by using the SELECT SQL statement
+        console.log('----------------------------------------------------------');
+        console.log(productList);
+        console.log('----------------------------------------------------------');
+        chooseProduct(productList);
+    });
+}
