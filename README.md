@@ -118,3 +118,10 @@ In the project root directory (bamazon-mysql), the project directory structure i
 ![Customer Flow 5](https://raw.githubusercontent.com/avakrishn/bamazon-mysql/master/assets/images/customer-flow-5.png)
 
 ![Customer Flow 6](https://raw.githubusercontent.com/avakrishn/bamazon-mysql/master/assets/images/customer-flow-6.png)
+
+
+### **Future Code Development:**
+* Source code will be developed over time to handle new features in the future.
+
+### **Issues:**
+* If you find an issue while using the app or have a request, <a href="https://github.com/avakrishn/bamazon-mysql/issues" target="_blank">log the issue or request here</a>. These issues will be addressed in a future code update.
